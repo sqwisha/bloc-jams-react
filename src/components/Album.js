@@ -10,7 +10,7 @@ class Album extends Component {
 
     this.state = {
       album: album,
-      currentSong: album.songs[0],
+      currentSong: '',
       isPlaying: false
     };
 
@@ -33,13 +33,46 @@ class Album extends Component {
     this.setState({ currentSong: song });
   }
 
-  handleSongClick(song) {
+  spanDisplay(song, index) {
+    const isSameSong = song === this.state.currentSong;
+    const isPlaying = this.state.isPlaying;
+
+    if (isSameSong && isPlaying) {
+      return <span className="icon ion-md-pause"></span>;
+    } else if (isSameSong && !isPlaying) {
+      return <span className="icon ion-md-play"></span>;
+    } else {
+      return <span>{index + 1}</span>;
+    }
+  }
+
+  handleSongClick(e, song) {
     const isSameSong = this.state.currentSong === song;
+    const targetSpan = e.currentTarget.querySelector('span');
     if (isSameSong && this.state.isPlaying) {
+      targetSpan.className="icon ion-md-play";
       this.pause();
     } else {
       if (!isSameSong) { this.setSong(song); }
       this.play();
+      targetSpan.className="icon ion-md-pause";
+    }
+  }
+
+  onMouseOver(e) {
+    const targetSpan = e.currentTarget.querySelector('span');
+    const notPlaying = targetSpan.className !== "icon ion-md-pause";
+    if (notPlaying) {
+      targetSpan.innerText = '';
+      targetSpan.className = 'icon ion-md-play';
+    }
+  }
+
+  onMouseOut(e, song, index) {
+    const targetSpan = e.currentTarget.querySelector('span');
+    if (song !== this.state.currentSong) {
+      targetSpan.innerText = `${index + 1}`;
+      targetSpan.className = '';
     }
   }
 
@@ -63,8 +96,11 @@ class Album extends Component {
             <tbody>
               {
                 this.state.album.songs.map( (song, index) =>
-                  <tr className="song" key={index} onClick={() => this.handleSongClick(song)}>
-                    <td>{index + 1}</td>
+                  <tr className="song" key={index}
+                  onClick={(e) => this.handleSongClick(e, song)}
+                  onMouseEnter={(e) => this.onMouseOver(e)}
+                  onMouseLeave={(e) => this.onMouseOut(e, song, index)}>
+                    <td>{this.spanDisplay(song, index)}</td>
                     <td>{song.title}</td>
                     <td>{song.duration}</td>
                   </tr>
