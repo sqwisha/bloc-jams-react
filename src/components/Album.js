@@ -11,7 +11,8 @@ class Album extends Component {
     this.state = {
       album: album,
       currentSong: '',
-      isPlaying: false
+      isPlaying: false,
+      hoveredSong: ''
     };
 
     this.audioElement = document.createElement('audio');
@@ -33,46 +34,43 @@ class Album extends Component {
     this.setState({ currentSong: song });
   }
 
-  spanDisplay(song, index) {
-    const isSameSong = song === this.state.currentSong;
-    const isPlaying = this.state.isPlaying;
-
-    if (isSameSong && isPlaying) {
-      return <span className="icon ion-md-pause"></span>;
-    } else if (isSameSong && !isPlaying) {
-      return <span className="icon ion-md-play"></span>;
-    } else {
-      return <span>{index + 1}</span>;
-    }
-  }
-
   handleSongClick(e, song) {
     const isSameSong = this.state.currentSong === song;
-    const targetSpan = e.currentTarget.querySelector('span');
     if (isSameSong && this.state.isPlaying) {
-      targetSpan.className="icon ion-md-play";
       this.pause();
     } else {
       if (!isSameSong) { this.setSong(song); }
       this.play();
-      targetSpan.className="icon ion-md-pause";
     }
   }
 
-  onMouseOver(e) {
-    const targetSpan = e.currentTarget.querySelector('span');
-    const notPlaying = targetSpan.className !== "icon ion-md-pause";
-    if (notPlaying) {
-      targetSpan.innerText = '';
-      targetSpan.className = 'icon ion-md-play';
-    }
+  onHover(song) {
+    this.setState({ hoveredSong: song });
   }
 
-  onMouseOut(e, song, index) {
-    const targetSpan = e.currentTarget.querySelector('span');
-    if (song !== this.state.currentSong) {
-      targetSpan.innerText = `${index + 1}`;
-      targetSpan.className = '';
+  offHover() {
+    this.setState({ hoveredSong: '' });
+  }
+
+  songNumberDisplay(song, index) {
+    const isCurrentSong = song === this.state.currentSong;
+    const isPlaying = this.state.isPlaying;
+    const isSongHovered = song === this.state.hoveredSong;
+    const hoveredNotCurrent = !isCurrentSong && isSongHovered;
+    const currentNotPlaying = isCurrentSong && !isPlaying;
+
+    if (hoveredNotCurrent || currentNotPlaying) {
+      return(
+        <span className="icon ion-md-play"></span>
+      );
+    } else if (isCurrentSong && isPlaying) {
+      return(
+        <span className="icon ion-md-pause"></span>
+      );
+    } else {
+      return(
+        <span>{index + 1}</span>
+      );
     }
   }
 
@@ -98,9 +96,9 @@ class Album extends Component {
                 this.state.album.songs.map( (song, index) =>
                   <tr className="song" key={index}
                   onClick={(e) => this.handleSongClick(e, song)}
-                  onMouseEnter={(e) => this.onMouseOver(e)}
-                  onMouseLeave={(e) => this.onMouseOut(e, song, index)}>
-                    <td>{this.spanDisplay(song, index)}</td>
+                  onMouseEnter={() => this.onHover(song)}
+                  onMouseLeave={() => this.offHover()}>
+                    <td>{this.songNumberDisplay(song, index)}</td>
                     <td>{song.title}</td>
                     <td>{song.duration}</td>
                   </tr>
