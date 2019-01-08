@@ -18,7 +18,7 @@ class PlayerBar extends Component {
           </button>
         </section>
         <section id="time-conrol">
-          <div className="current-time">{this.props.currentTime}</div>
+          <div className="current-time">{this.props.currentTimeDisplay}</div>
           <input
           type="range"
           className="seek-bar"
@@ -28,11 +28,15 @@ class PlayerBar extends Component {
           step="0.01"
           onChange={this.props.handleTimeChange}
           />
-          <div className="total-time">-:--</div>
+          <div className="total-time">{this.props.totalTimeDisplay}</div>
         </section>
         <section id="volume-control">
           <div className="icon ion-volume-low"></div>
-          <input type="range" className="seek-bar" defaultValue="80" />
+          <input
+          type="range"
+          className="seek-bar"
+          defaultValue="80"
+          onChange={this.props.handleVolumeChange}/>
           <div className="icon ion-volume-high"></div>
         </section>
       </section>

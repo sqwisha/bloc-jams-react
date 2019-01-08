@@ -11,7 +11,7 @@ class Album extends Component {
 
     this.state = {
       album: album,
-      currentSong: null,
+      currentSong: album.songs[0],
       isPlaying: false,
       hoveredSong: null,
       currentTime: 0,
@@ -56,6 +56,14 @@ class Album extends Component {
     this.setState({ currentSong: song });
   }
 
+  formatTime(num) {
+    const time = parseInt(~~(num));
+    if ( isNaN(time) || time < 0 ) {return '-:--';}
+    const minutes = ~~(num / 60);
+    const seconds = ~~(num % 60);
+    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds }`;
+  }
+
   handleSongClick(song) {
     const isSameSong = this.state.currentSong === song;
     if (isSameSong && this.state.isPlaying) {
@@ -87,7 +95,7 @@ class Album extends Component {
   }
 
   offHover() {
-    this.setState({ hoveredSong: '' });
+    this.setState({ hoveredSong: null });
   }
 
   songNumberDisplay(song, index) {
@@ -116,6 +124,11 @@ class Album extends Component {
     const newTime = this.audioElement.duration * e.target.value;
     this.audioElement.currentTime = newTime;
     this.setState({ currentTime: newTime });
+  }
+
+  handleVolumeChange(e) {
+    const newVolume = e.target.value / 100;
+    this.audioElement.volume = newVolume;
   }
 
   render() {
@@ -150,14 +163,18 @@ class Album extends Component {
               }
             </tbody>
           </table>
-          <PlayerBar isPlaying={this.state.isPlaying}
+          <PlayerBar
+          isPlaying={this.state.isPlaying}
           currentSong={this.state.currentSong}
           handleSongClick={() => this.handleSongClick(this.state.currentSong)}
           handlePrevClick={() => this.handlePrevClick()}
           handleNextClick={() => this.handleNextClick()}
           handleTimeChange={(e) => this.handleTimeChange(e)}
+          handleVolumeChange={(e) => this.handleVolumeChange(e)}
           currentTime={this.audioElement.currentTime}
-          duration={this.audioElement.duration} />
+          duration={this.audioElement.duration}
+          currentTimeDisplay={this.formatTime(this.audioElement.currentTime)}
+          totalTimeDisplay={this.formatTime(this.audioElement.duration)} />
       </section>
     );
   }
