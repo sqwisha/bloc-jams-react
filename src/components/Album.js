@@ -1,12 +1,106 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import albumData from './../data/albums';
 import PlayerBar from './PlayerBar';
+
+const AlbumContainer = styled.section`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 900px;
+  margin: 0 auto 166px;
+
+  @media (max-width: 899px) {
+    margin: 0 auto 136px;
+  }
+`;
+
+const AlbumInfo = styled.section`
+  order: 1;
+  flex: 1 1 auto;
+  text-align: left;
+  max-width: 450px;
+  margin: 22px 22px 0 0;
+
+  @media (max-width: 899px) {
+    max-width: 640px;
+    text-align: center;
+    margin: 22px 22px 0;
+  }
+`;
+
+const AlbumDetails = styled.div`
+  width: 100%;
+  margin-bottom: 24px;
+`;
+
+const AlbumTitle = styled.h1`
+  font-size: 3em;
+  color: #00362C;
+  margin: 0 0 8px;
+`;
+
+const Artist = styled.h2`
+  font-family: "Open Sans", sans-serif;
+  font-size: 2em;
+  color: #791422;
+  margin: 0 0 16px;
+`;
+
+const ReleaseInfo = styled.div`
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.1em;
+  margin: 0;
+`;
+
+const SongList = styled.table`
+  flex: 1 1 auto;
+  width: 100%;
+  font-size: 1.1em;
+  text-align: center;
+  border-collapse: collapse;
+  font-family: "Open Sans", sans-serif;
+
+  .song {
+    line-height: 3em;
+  }
+
+  .song td:first-of-type {
+    width: 3em;
+  }
+
+  .song td:nth-of-type(even) {
+    text-align: left;
+    padding-left: 5%;
+
+    @media (max-width: 899px) {
+      text-align: center;
+    }
+  }
+
+  .song:nth-of-type(odd) {
+    background-color: rgba(109,163,152, 0.3);
+  }
+`;
+
+const CoverArt = styled.img`
+  order: 2;
+  flex: 0 1 auto;
+  max-width: 450px;
+  margin: 22px;
+  width: 90%;
+
+  @media (max-width: 899px) {
+    max-width: 640px;
+  }
+`;
 
 class Album extends Component {
   constructor(props) {
     super(props);
     const album = albumData.find( album => {
-      return album.slug === this.props.match.params.slug
+      return album.slug === this.props.match.params.slug;
     });
 
     this.state = {
@@ -24,10 +118,10 @@ class Album extends Component {
 
   componentDidMount() {
     this.eventListeners = {
-      timeupdate: e => {
-        this.setState({ currentTime: this.audioElement.currentTime })
+      timeupdate: () => {
+        this.setState({ currentTime: this.audioElement.currentTime });
       },
-      durationchange: e => {
+      durationchange: () => {
         this.setState({ duration: this.audioElement.duration });
       }
     };
@@ -37,8 +131,8 @@ class Album extends Component {
 
   componentWillUnmount() {
     this.audioElement.src = null;
-    this.removeEventListener('timeupdate',this.eventListeners.timeupdate);
-    this.removeEventListener('durationchange', this.eventListeners.durationchange);
+    this.audioElement.removeEventListener('timeupdate',this.eventListeners.timeupdate);
+    this.audioElement.removeEventListener('durationchange', this.eventListeners.durationchange);
   }
 
   play() {
@@ -133,16 +227,15 @@ class Album extends Component {
 
   render() {
     return (
-      <section className="album">
-        <section id="album-info">
-          <img id="album-cover-art" src={this.state.album.albumCover} alt={this.state.album.title} />
-          <div className="album-details">
-            <h1 id="album-title">{this.state.album.title}</h1>
-            <h2 className="artist">{this.state.album.artist}</h2>
-            <div id="release-info">{this.state.album.releaseInfo}</div>
-          </div>
-        </section>
-          <table id="song-list">
+      <AlbumContainer>
+
+        <AlbumInfo>
+          <AlbumDetails>
+            <AlbumTitle>{this.state.album.title}</AlbumTitle>
+            <Artist>{this.state.album.artist}</Artist>
+            <ReleaseInfo>{this.state.album.releaseInfo}</ReleaseInfo>
+          </AlbumDetails>
+          <SongList>
             <colgroup>
               <col id="song-number-column" />
               <col id="song-title-column" />
@@ -152,18 +245,21 @@ class Album extends Component {
               {
                 this.state.album.songs.map( (song, index) =>
                   <tr className="song" key={index}
-                  onClick={() => this.handleSongClick(song)}
-                  onMouseEnter={() => this.onHover(song)}
-                  onMouseLeave={() => this.offHover()}>
+                    onClick={() => this.handleSongClick(song)}
+                    onMouseEnter={() => this.onHover(song)}
+                    onMouseLeave={() => this.offHover()}>
                     <td>{this.songNumberDisplay(song, index)}</td>
                     <td>{song.title}</td>
-                    <td>{song.duration}</td>
+                    <td>{this.formatTime(song.duration)}</td>
                   </tr>
                 )
               }
             </tbody>
-          </table>
-          <PlayerBar
+          </SongList>
+        </AlbumInfo>
+        <CoverArt src={this.state.album.albumCover} alt={this.state.album.title} />
+
+        <PlayerBar
           isPlaying={this.state.isPlaying}
           currentSong={this.state.currentSong}
           handleSongClick={() => this.handleSongClick(this.state.currentSong)}
@@ -175,7 +271,7 @@ class Album extends Component {
           duration={this.audioElement.duration}
           currentTimeDisplay={this.formatTime(this.audioElement.currentTime)}
           totalTimeDisplay={this.formatTime(this.audioElement.duration)} />
-      </section>
+      </AlbumContainer>
     );
   }
 }
