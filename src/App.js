@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import './App.css';
-import logo from './images/logo.png';
+import logo from './images/logo-vint.png';
 import Landing from './components/Landing';
 import Library from './components/Library';
 import Album from './components/Album';
@@ -45,7 +45,7 @@ class App extends Component {
     return (
       <AppContainer>
         <Header>
-          <Link to="/"><Logo src={logo} alt="Bloc Jams Turn the music up!" /></Link>
+          <Link to="/"><Logo src={logo} alt="Vintage Jams - Turn the music up!" /></Link>
           <nav>
             <NavLink to="/">
               Home
