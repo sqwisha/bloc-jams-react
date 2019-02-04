@@ -27,7 +27,7 @@ const Header = styled.header`
 `;
 
 const Logo = styled.img`
-  width: 170px;
+  width: 200px;
 `;
 
 const NavLink = styled(Link)`
