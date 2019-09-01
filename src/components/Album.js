@@ -8,10 +8,10 @@ const AlbumContainer = styled.section`
   flex-flow: row wrap;
   justify-content: center;
   align-items: flex-start;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto 166px;
 
-  @media (max-width: 899px) {
+  @media (max-width: 965px) {
     margin: 0 auto 136px;
   }
 `;
@@ -23,7 +23,7 @@ const AlbumInfo = styled.section`
   max-width: 450px;
   margin: 22px 22px 0 0;
 
-  @media (max-width: 899px) {
+  @media (max-width: 965px) {
     max-width: 640px;
     text-align: center;
     margin: 22px 22px 0;
@@ -70,11 +70,15 @@ const SongList = styled.table`
     width: 3em;
   }
 
+  .song td:last-of-type {
+    padding-right: 0.5em;
+  }
+
   .song td:nth-of-type(even) {
     text-align: left;
     padding-left: 5%;
 
-    @media (max-width: 899px) {
+    @media (max-width: 965px) {
       text-align: center;
     }
   }
@@ -91,7 +95,7 @@ const CoverArt = styled.img`
   margin: 22px;
   width: 90%;
 
-  @media (max-width: 899px) {
+  @media (max-width: 965px) {
     max-width: 640px;
   }
 `;
