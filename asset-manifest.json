@@ -1,9 +1,9 @@
 {
   "main.css": "/jams-react/static/css/main.51fd8650.chunk.css",
-  "main.js": "/jams-react/static/js/main.0e01c4ad.chunk.js",
-  "main.js.map": "/jams-react/static/js/main.0e01c4ad.chunk.js.map",
-  "static/js/1.aa3580a5.chunk.js": "/jams-react/static/js/1.aa3580a5.chunk.js",
-  "static/js/1.aa3580a5.chunk.js.map": "/jams-react/static/js/1.aa3580a5.chunk.js.map",
+  "main.js": "/jams-react/static/js/main.e77ace7d.chunk.js",
+  "main.js.map": "/jams-react/static/js/main.e77ace7d.chunk.js.map",
+  "static/js/1.a4db3ad2.chunk.js": "/jams-react/static/js/1.a4db3ad2.chunk.js",
+  "static/js/1.a4db3ad2.chunk.js.map": "/jams-react/static/js/1.a4db3ad2.chunk.js.map",
   "runtime~main.js": "/jams-react/static/js/runtime~main.008a219a.js",
   "runtime~main.js.map": "/jams-react/static/js/runtime~main.008a219a.js.map",
   "static/media/logo-vint.png": "/jams-react/static/media/logo-vint.c37ccd60.png",
@@ -12,6 +12,6 @@
   "static/media/record.jpg": "/jams-react/static/media/record.55c27e6e.jpg",
   "static/css/main.51fd8650.chunk.css.map": "/jams-react/static/css/main.51fd8650.chunk.css.map",
   "index.html": "/jams-react/index.html",
-  "precache-manifest.55aa36e419387e551679749cfd7524aa.js": "/jams-react/precache-manifest.55aa36e419387e551679749cfd7524aa.js",
+  "precache-manifest.61b519ca2f4a9730d422691df482351b.js": "/jams-react/precache-manifest.61b519ca2f4a9730d422691df482351b.js",
   "service-worker.js": "/jams-react/service-worker.js"
 }
