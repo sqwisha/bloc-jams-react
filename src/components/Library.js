@@ -15,16 +15,15 @@ const LibraryContainer = styled.section`
 
 const AlbumLink = styled(Link)`
   text-decoration: none;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   align-self: center;
   flex: 0 1 auto;
   padding: 22px 0 0;
   width: 445px;
-  color: #282C34;
-
+  color: #282c34;
 
   &:visited {
-    color: #0E5244;
+    color: #0e5244;
   }
 
   &:hover {
@@ -57,17 +56,17 @@ class Library extends Component {
   render() {
     return (
       <LibraryContainer>
-        {
-          this.state.albums.map( (album, index) =>
-            <AlbumLink to={`/album/${album.slug}`} key={index}>
-              <AlbumImg src={album.albumCover} alt={album.title} />
-              <AlbumInfo>
-                <div>{album.title} - {album.artist}</div>
-                <div>{album.songs.length} songs</div>
-              </AlbumInfo>
-            </AlbumLink>
-          )
-        }
+        {this.state.albums.map((album, index) => (
+          <AlbumLink to={`/album/${album.slug}`} key={index}>
+            <AlbumImg src={album.albumCover} alt={album.title} />
+            <AlbumInfo>
+              <div>
+                {album.title} - {album.artist}
+              </div>
+              <div>{album.songs.length} songs</div>
+            </AlbumInfo>
+          </AlbumLink>
+        ))}
       </LibraryContainer>
     );
   }

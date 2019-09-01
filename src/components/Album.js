@@ -37,19 +37,19 @@ const AlbumDetails = styled.div`
 
 const AlbumTitle = styled.h1`
   font-size: 3em;
-  color: #00362C;
+  color: #00362c;
   margin: 0 0 8px;
 `;
 
 const Artist = styled.h2`
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 2em;
   color: #791422;
   margin: 0 0 16px;
 `;
 
 const ReleaseInfo = styled.div`
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 1.1em;
   margin: 0;
 `;
@@ -60,7 +60,7 @@ const SongList = styled.table`
   font-size: 1.1em;
   text-align: center;
   border-collapse: collapse;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 
   .song {
     line-height: 3em;
@@ -80,7 +80,7 @@ const SongList = styled.table`
   }
 
   .song:nth-of-type(odd) {
-    background-color: rgba(109,163,152, 0.3);
+    background-color: rgba(109, 163, 152, 0.3);
   }
 `;
 
@@ -99,7 +99,7 @@ const CoverArt = styled.img`
 class Album extends Component {
   constructor(props) {
     super(props);
-    const album = albumData.find( album => {
+    const album = albumData.find((album) => {
       return album.slug === this.props.match.params.slug;
     });
 
@@ -125,19 +125,31 @@ class Album extends Component {
         this.setState({ duration: this.audioElement.duration });
       }
     };
-    this.audioElement.addEventListener('timeupdate', this.eventListeners.timeupdate);
-    this.audioElement.addEventListener('durationchange', this.eventListeners.durationchange);
+    this.audioElement.addEventListener(
+      'timeupdate',
+      this.eventListeners.timeupdate
+    );
+    this.audioElement.addEventListener(
+      'durationchange',
+      this.eventListeners.durationchange
+    );
   }
 
   componentWillUnmount() {
     this.audioElement.src = null;
-    this.audioElement.removeEventListener('timeupdate',this.eventListeners.timeupdate);
-    this.audioElement.removeEventListener('durationchange', this.eventListeners.durationchange);
+    this.audioElement.removeEventListener(
+      'timeupdate',
+      this.eventListeners.timeupdate
+    );
+    this.audioElement.removeEventListener(
+      'durationchange',
+      this.eventListeners.durationchange
+    );
   }
 
   play() {
     this.audioElement.play();
-    this.setState({  isPlaying: true });
+    this.setState({ isPlaying: true });
   }
 
   pause() {
@@ -151,11 +163,13 @@ class Album extends Component {
   }
 
   formatTime(num) {
-    const time = parseInt(~~(num));
-    if ( isNaN(time) || time < 0 ) {return '-:--';}
+    const time = parseInt(~~num);
+    if (isNaN(time) || time < 0) {
+      return '-:--';
+    }
     const minutes = ~~(num / 60);
     const seconds = ~~(num % 60);
-    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds }`;
+    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
   }
 
   handleSongClick(song) {
@@ -163,13 +177,17 @@ class Album extends Component {
     if (isSameSong && this.state.isPlaying) {
       this.pause();
     } else {
-      if (!isSameSong) { this.setSong(song); }
+      if (!isSameSong) {
+        this.setSong(song);
+      }
       this.play();
     }
   }
 
   handlePrevClick() {
-    const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
+    const currentIndex = this.state.album.songs.findIndex(
+      (song) => this.state.currentSong === song
+    );
     const newIndex = Math.max(0, currentIndex - 1);
     const newSong = this.state.album.songs[newIndex];
     this.setSong(newSong);
@@ -177,8 +195,13 @@ class Album extends Component {
   }
 
   handleNextClick() {
-    const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
-    const newIndex = Math.min(this.state.album.songs.length-1, currentIndex + 1);
+    const currentIndex = this.state.album.songs.findIndex(
+      (song) => this.state.currentSong === song
+    );
+    const newIndex = Math.min(
+      this.state.album.songs.length - 1,
+      currentIndex + 1
+    );
     const newSong = this.state.album.songs[newIndex];
     this.setSong(newSong);
     this.play();
@@ -200,17 +223,11 @@ class Album extends Component {
     const currentNotPlaying = isCurrentSong && !isPlaying;
 
     if (hoveredNotCurrent || currentNotPlaying) {
-      return(
-        <span className="icon ion-md-play"></span>
-      );
+      return <span className="icon ion-md-play" />;
     } else if (isCurrentSong && isPlaying) {
-      return(
-        <span className="icon ion-md-pause"></span>
-      );
+      return <span className="icon ion-md-pause" />;
     } else {
-      return(
-        <span>{index + 1}</span>
-      );
+      return <span>{index + 1}</span>;
     }
   }
 
@@ -228,7 +245,6 @@ class Album extends Component {
   render() {
     return (
       <AlbumContainer>
-
         <AlbumInfo>
           <AlbumDetails>
             <AlbumTitle>{this.state.album.title}</AlbumTitle>
@@ -242,22 +258,26 @@ class Album extends Component {
               <col id="song-duration-column" />
             </colgroup>
             <tbody>
-              {
-                this.state.album.songs.map( (song, index) =>
-                  <tr className="song" key={index}
-                    onClick={() => this.handleSongClick(song)}
-                    onMouseEnter={() => this.onHover(song)}
-                    onMouseLeave={() => this.offHover()}>
-                    <td>{this.songNumberDisplay(song, index)}</td>
-                    <td>{song.title}</td>
-                    <td>{this.formatTime(song.duration)}</td>
-                  </tr>
-                )
-              }
+              {this.state.album.songs.map((song, index) => (
+                <tr
+                  className="song"
+                  key={index}
+                  onClick={() => this.handleSongClick(song)}
+                  onMouseEnter={() => this.onHover(song)}
+                  onMouseLeave={() => this.offHover()}
+                >
+                  <td>{this.songNumberDisplay(song, index)}</td>
+                  <td>{song.title}</td>
+                  <td>{this.formatTime(song.duration)}</td>
+                </tr>
+              ))}
             </tbody>
           </SongList>
         </AlbumInfo>
-        <CoverArt src={this.state.album.albumCover} alt={this.state.album.title} />
+        <CoverArt
+          src={this.state.album.albumCover}
+          alt={this.state.album.title}
+        />
 
         <PlayerBar
           isPlaying={this.state.isPlaying}
@@ -270,7 +290,8 @@ class Album extends Component {
           currentTime={this.audioElement.currentTime}
           duration={this.audioElement.duration}
           currentTimeDisplay={this.formatTime(this.audioElement.currentTime)}
-          totalTimeDisplay={this.formatTime(this.audioElement.duration)} />
+          totalTimeDisplay={this.formatTime(this.audioElement.duration)}
+        />
       </AlbumContainer>
     );
   }

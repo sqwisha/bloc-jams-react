@@ -16,7 +16,7 @@ const Header = styled.header`
   position: absolute;
   width: 100%;
   padding: 14px 40px;
-  background-color: #282C34;
+  background-color: #282c34;
   min-height: 100px;
   display: flex;
   flex-flow: row nowrap;
@@ -33,7 +33,7 @@ const Logo = styled.img`
 const NavLink = styled(Link)`
   text-decoration: none;
   padding: 0.7em;
-  color: #FFE0AA;
+  color: #ffe0aa;
 `;
 
 const Main = styled.main`
@@ -45,12 +45,14 @@ class App extends Component {
     return (
       <AppContainer>
         <Header>
-          <Link to="/"><Logo src={logo} alt="Vintage Jams - Turn the music up!" /></Link>
+          <Link basename="/jams-react" to="/">
+            <Logo src={logo} alt="Vintage Jams - Turn the music up!" />
+          </Link>
           <nav>
-            <NavLink to="/">
+            <NavLink basename="/jams-react" to="/">
               Home
             </NavLink>
-            <NavLink to="/library">
+            <NavLink basename="/jams-react" to="/library">
               Library
             </NavLink>
           </nav>
